@@ -1,0 +1,24 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "battleship game form The Odin Project",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "watch": "jest watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrea-maiolo/battleship.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrea-maiolo/battleship/issues"
+  },
+  "homepage": "https://github.com/andrea-maiolo/battleship#readme",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
+}
