@@ -3,7 +3,6 @@ const shipFactory = function (length){
 
     const hit = function(arg){       
         totalHits.push(arg);
-        console.log(totalHits)
         return totalHits
     }
 

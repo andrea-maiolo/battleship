@@ -1,4 +1,4 @@
-const shipFactory = require('./shipFactory');
+const shipFactory = require('../factories/shipFactory');
 
 describe('ship factory is working',()=>{
     let testShip
