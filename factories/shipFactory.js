@@ -1,4 +1,23 @@
-const shipFactory = function (length){
+const shipFactory = function (name){
+    let length
+    switch (name) {
+        case "patrol":
+           length = 2; 
+            break;
+        case "curser":
+            length = 2;
+            break;
+        case "sub":
+            length=3;
+            break;
+        case "battleship":
+            length=4;
+            break;
+        case "admiral":
+            length=5;
+            break;
+    }
+
     const totalHits =[];
 
     const hit = function(arg){       
@@ -11,6 +30,7 @@ const shipFactory = function (length){
     }
 
     return {
+        name: name,
         length:length,
         totalHits:totalHits,
         hit: hit,
