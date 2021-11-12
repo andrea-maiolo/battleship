@@ -1,9 +1,9 @@
-const shipFactory = require('./shipFactory');
+const shipFactory = require('../factories/shipFactory');
 
 describe('ship factory is working',()=>{
     let testShip
     beforeEach(()=>{
-        testShip = new shipFactory(5);
+        testShip = new shipFactory("admiral");
     });
     test('accepts a hit', () =>{
         testShip.hit(1),
