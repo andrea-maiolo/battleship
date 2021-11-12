@@ -16,7 +16,7 @@ describe('gameboard is created with 10x10 cells',()=>{
         expect(testGameBoard.gameBoard[5].isBeenShot).toBe(false);
     });
     test('every cell has a way to check for ships',()=>{
-        expect(testGameBoard.gameBoard[26].shipPresent).toBe(false);
+        expect(testGameBoard.gameBoard[26].shipObj).toBeUndefined();
     });
 });
 
@@ -29,17 +29,17 @@ describe('gameBoard has a function for allocating the ship',()=>{
     });
     test('gameBoard shipAllocation works with x axis',() =>{
         testGameBoard.shipAllocation(testShip,3, "x");
-        expect(testGameBoard.gameBoard[3].shipPresent).toBe(true);
-        expect(testGameBoard.gameBoard[4].shipPresent).toBe(true);
-        expect(testGameBoard.gameBoard[5].shipPresent).toBe(true);
-        expect(testGameBoard.gameBoard[6].shipPresent).toBe(true);
+        expect(testGameBoard.gameBoard[3].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[4].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[5].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[6].shipObj).toBe(testShip);
     });
     test('gameBoard shipAllocation works with y axis',() =>{
         testGameBoard.shipAllocation(testShip,3, "y");
-        expect(testGameBoard.gameBoard[3].shipPresent).toBe(true);
-        expect(testGameBoard.gameBoard[13].shipPresent).toBe(true);
-        expect(testGameBoard.gameBoard[23].shipPresent).toBe(true);
-        expect(testGameBoard.gameBoard[33].shipPresent).toBe(true);
+        expect(testGameBoard.gameBoard[3].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[13].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[23].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[33].shipObj).toBe(testShip);
     });
     test('gameBoard shipAllocation save the ship obj in the cells in which is present',() =>{
         testGameBoard.shipAllocation(testShip,3, "x");
@@ -93,4 +93,38 @@ describe('gameBoard attack function can call on the ship if hit',()=>{
     })
 });
 
-
+describe('gameBoard let you know that the game is over',()=>{
+    let testGameBoard
+    let testShipOne
+    let testShipTwo
+    beforeEach(()=>{
+        testShipOne = new shipFactory('battleship');
+        testShipTwo = new shipFactory('patrol');
+        testGameBoard = new gameBoardFactory();
+        testGameBoard.shipAllocation(testShipOne,3, "x");
+        testGameBoard.shipAllocation(testShipTwo, 10,"x");
+        testGameBoard.attackIsBeenShot(3);
+        testGameBoard.attackIsBeenShot(4);
+        testGameBoard.attackIsBeenShot(5);
+    });
+    test('the game is not over yet',() =>{
+        expect(testGameBoard.attackIsBeenShot(6)).toBe(`your ${testShipOne.name} has been sunk!`);
+        expect(testShipOne.totalHits).toEqual([3,4,5,6]);
+    });
+    test('check is ship one is sunk', ()=>{
+        testGameBoard.attackIsBeenShot(6)
+        expect(testShipOne.isSunk()).toBe(true);
+    });
+    test('the game aint over yet', ()=>{
+        testGameBoard.attackIsBeenShot(6);
+        expect(testGameBoard.isTheGameOver()).toBe(false)
+    });
+    test('the game is over', ()=>{
+        testGameBoard.attackIsBeenShot(6);
+        testGameBoard.attackIsBeenShot(10);
+        testGameBoard.attackIsBeenShot(11);
+        expect(testShipTwo.isSunk()).toBe(true)
+        expect(testShipOne.isSunk()).toBe(true);
+        expect(testGameBoard.isTheGameOver()).toBe(true)
+    });
+});
