@@ -1,6 +1,22 @@
-const playerFactory = function(){
+const playerFactory = function(name){
+    
+    let arrayOfIllegalMoves=[] 
 
+    const attackEnemy = function(gb,coord){
+        arrayOfIllegalMoves.push(coord)
+        if(arrayOfIllegalMoves.includes(coord)){
+            return "you can't shoot on the same cell"
+        }else{
+            return gb.attackIsBeenShot(coord)
+        }
+    }
+    
+    return {
+        name:name,
+        attackEnemy: attackEnemy
+    }
 }
+module.exports = playerFactory
 
 // player properties = 
 // name 
