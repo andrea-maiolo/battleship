@@ -1,5 +1,3 @@
-const { isNullLiteral, isIdentifier, arrayExpression } = require("@babel/types");
-
 const gameBoardFactory = function(){
     const gameBoard=[];
     const initialize = (function(){
