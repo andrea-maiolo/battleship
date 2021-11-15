@@ -9,7 +9,7 @@ describe('player is created', ()=>{
     });
 });
 
-describe.only('testing attack function of player',()=>{
+describe('testing attack function of player',()=>{
     let andyBoard
     let andyShip
     let markShip
@@ -27,11 +27,13 @@ describe.only('testing attack function of player',()=>{
         mark = new playerFactory("mark");
     });
     test('one player attack the other',()=>{   
+        expect(andy.attackEnemy(markBoard,10)).toBe(markShip.totalHits[10]);
         expect(andy.attackEnemy(markBoard,10)).toBe("you can't shoot on the same cell")
-            
-        // expect(markBoard.gameBoard[10].isBeenShot).toBe(true);
-        // expect(markShip.totalHits).toEqual([10])
-        // andy.attackEnemy(markBoard,11)
-        // expect(markShip.isSunk()).toBe(true)
+        expect(markBoard.gameBoard[10].isBeenShot).toBe(true);
+    });
+    test('after attack ship sinks',()=>{
+        andy.attackEnemy(markBoard,11)
+        andy.attackEnemy(markBoard,10)
+        expect(markShip.isSunk()).toBe(true)
     })
 })

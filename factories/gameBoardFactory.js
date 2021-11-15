@@ -9,12 +9,12 @@ const gameBoardFactory = function(){
     const shipAllocation = function(ship,cell,axis){
         if(axis =="x"){
             for(let i=0; i<ship.length; i++){
-                gameBoard[cell+i].shipObj = ship;
+                this.gameBoard[cell+i].shipObj = ship;
             }
         }else{
             let currentCell = cell;
             for(let i=0; i<ship.length; i++){
-                gameBoard[currentCell].shipObj = ship
+                this.gameBoard[currentCell].shipObj = ship
                 currentCell +=10;
             }
         }
