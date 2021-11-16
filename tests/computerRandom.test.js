@@ -1,29 +1,16 @@
-const computerPlayer = require('../computerPlayer/computerPlayerCreation');
-const computerBoard = require('../computerPlayer/cpBoardCreation');
-const computerShipArray = require('../computerPlayer/cpShipsCreation');
+const cp = require('../computerPlayer/cp');
 
-describe.only('computerPLayer exists',()=>{
-    test.only('computer has a player',()=>{
-        expect(computerPlayer).toBeTruthy();
-        console.log(computerBoard)
+describe('computerPLayer exists',()=>{
+    beforeEach(()=>{
+        testC = new cp();
+    });
+    test('computer has a player',()=>{
+        expect(testC.name).toBe('Skynet');
     });
     test('computer has a board',()=>{
-        expect(computerBoard.cpBoard).toBeTruthy();
-        console.log(computerBoard.cpBoard)
+        expect(testC.cpBoard.gameBoard.length).toBe(100);
     });
-    // test('computer board has the right properties',()=>{
-    //     expect(computerBoard.cpBoard.gameBoard).toBeTruthy()
-    //     expect(computerBoard.cpBoard.shipAllocation).toBeTruthy()
-    //     expect(computerBoard.cpBoard.isTheGameOver).toBeTruthy()
-    //     expect(computerBoard.cpBoard.attackIsBeenShot).toBeTruthy()
-    // })
-    // test('computer array of ships is with 5 ships',()=>{
-    //     expect(computerShipArray.length).toBe(5);
-    // });
-});
-
-describe('computerShips are allocated',()=>{
-    test('computer can allocate a ship',()=>{
-        expect(randomAllocation(computerShipArray, computerBoard.cpBoard)).toContain(3);
+    test('computer array of ships is with 5 ships',()=>{
+        expect(testC.cpShipArray.length).toBe(5);
     });
-});
+});   

@@ -5,7 +5,7 @@ const shipFactory = function (name){
            length = 2; 
             break;
         case "curser":
-            length = 2;
+            length = 3;
             break;
         case "sub":
             length=3;

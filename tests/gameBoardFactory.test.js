@@ -40,6 +40,8 @@ describe('gameBoard has a function for allocating the ship',()=>{
         expect(testGameBoard.gameBoard[13].shipObj).toBe(testShip);
         expect(testGameBoard.gameBoard[23].shipObj).toBe(testShip);
         expect(testGameBoard.gameBoard[33].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[43].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[14].shipObj).toBeUndefined()
     });
     test('gameBoard shipAllocation save the ship obj in the cells in which is present',() =>{
         testGameBoard.shipAllocation(testShip,3, "x");
