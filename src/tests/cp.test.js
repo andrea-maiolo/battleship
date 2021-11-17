@@ -11,11 +11,10 @@ describe('computerPLayer exists',()=>{
         andyShip = new shipFactory("patrol");
         andyBoard.shipAllocation(andyShip, 3, "x")
     });
-    test.only('computer has a player',()=>{
+    test('computer has a player',()=>{
         expect(testC.name).toBe('Skynet');
     });
     test('computer has a board',()=>{
-        console.log(testC.cpBoard)
         expect(testC.cpBoard.gameBoard.length).toBe(100);
     });
     test('computer array of ships is with 5 ships',()=>{

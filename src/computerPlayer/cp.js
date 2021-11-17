@@ -113,21 +113,57 @@ const cp = function(){
             return Math.floor(Math.random() * max);
         }
 
-        const shipAllocation = function(ship,cell,axis){
-            if(axis =="x"){
-                for(let i=0; i<ship.length; i++){
-                    console.log(gameBoard)
-                    gameBoard[cell+i].shipObj = ship;
-                }
-            }else{
-                let currentCell = cell;
-                for(let i=0; i<ship.length; i++){
-                    console.log(gameBoard)
-                    gameBoard[currentCell].shipObj = ship
-                    currentCell +=10;
-                }
+        const shipAllocationForCP = function(ship,cell,axis){
+            switch (axis) {
+                case "x":
+                    let rowLength = 10;
+                    let whichRowAmIIn = 1 +  Math.floor(cell / rowLength);
+                    let maxCoordAvailable = (rowLength*whichRowAmIIn) - ship.length;
+                    if(cell > maxCoordAvailable){
+                        return "cannot place your ship here"
+                    }else{
+    
+                        let controlCells =[];
+                        let lastCell = (cell + ship.length) - 1;
+                        for (let i= cell; i<= lastCell; i++) {
+                            controlCells.push(i)
+                        }
+                        const isEmpty = (currentValue) => gameBoard[currentValue].shipObj === undefined;
+                        if(controlCells.every(isEmpty)){
+                            for(let i=0; i<ship.length; i++){
+                                gameBoard[cell+i].shipObj = ship;
+                            }
+                        }else{
+                            return "cannot place 2 ships in the same spot"
+                        }
+                    }
+                    break;
+                case "y":
+                    let controlCells =[];
+                    let currentCell = cell;
+                    for (let i= 0; i<ship.length; i++) {
+                        controlCells.push(currentCell)
+                        currentCell += 10
+                    }
+    
+                    const existenceCheck = (value) => gameBoard[value] ? true : false;
+                    if(!controlCells.every(existenceCheck)){
+                        return "cannot place your ship here";
+                    }else{
+                        const isEmpty = (currentValue) => gameBoard[currentValue].shipObj === undefined;
+                        if(controlCells.every(isEmpty)){
+                            let workingCell = cell;
+                            for(let i=0; i<ship.length; i++){
+                                gameBoard[workingCell].shipObj = ship
+                                workingCell +=10;
+                            }
+                        }else{
+                            return "cannot place 2 ships in the same spot"
+                        }
+                    }
+                    break;
             }
-        }
+        };
 
         const randomAllocation = (function(array){
          
@@ -147,7 +183,7 @@ const cp = function(){
                     randomAxis = "x"
                 }else{ randomAxis = "y"}
             
-                shipAllocation(ship, randomCell, randomAxis)
+                shipAllocationForCP(ship, randomCell, randomAxis)
             }
     
         })(cpShipArray);
