@@ -1,12 +1,12 @@
 const gameBoardFactory = require('../factories/gameBoardFactory');
 const shipFactory = require('../factories/shipFactory');
 
-describe('gameboard is created with 10x10 cells',()=>{
+describe('gameboard has right properties',()=>{
     let testGameBoard
     beforeEach(()=>{
         testGameBoard = new gameBoardFactory();
     });
-    test('gaameBoard has 100 cells',()=>{
+    test('gameBoard has 100 cells',()=>{
         expect(testGameBoard.gameBoard.length).toBe(100);
     });
     test('every cell has an id',()=>{
@@ -23,9 +23,11 @@ describe('gameboard is created with 10x10 cells',()=>{
 describe('gameBoard has a function for allocating the ship',()=>{
     let testGameBoard
     let testShip
+    let testShipTwo
     beforeEach(()=>{
         testGameBoard = new gameBoardFactory();
         testShip = new shipFactory('admiral');
+        testShipTwo= new shipFactory("patrol");
     });
     test('gameBoard shipAllocation works with x axis',() =>{
         testGameBoard.shipAllocation(testShip,3, "x");
@@ -33,6 +35,22 @@ describe('gameBoard has a function for allocating the ship',()=>{
         expect(testGameBoard.gameBoard[4].shipObj).toBe(testShip);
         expect(testGameBoard.gameBoard[5].shipObj).toBe(testShip);
         expect(testGameBoard.gameBoard[6].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[7].shipObj).toBe(testShip);
+    });
+    test('shipAllocation does not let you wrap around grid',() =>{
+        expect(testGameBoard.shipAllocation(testShip,6, "x")).toBe("cannot place your ship here");        
+        expect(testGameBoard.shipAllocation(testShip,16,"x")).toBe("cannot place your ship here");
+        testGameBoard.shipAllocation(testShip,15,"x");
+        expect(testGameBoard.gameBoard[15].shipObj).toBe(testShip);
+        expect(testGameBoard.shipAllocation(testShipTwo,29,"x")).toBe("cannot place your ship here");
+        expect(testGameBoard.shipAllocation(testShipTwo,99,"x")).toBe("cannot place your ship here");
+    });
+    test('shipAllocation with axis x does not allow for multiple ships in same spot ',() =>{
+        testGameBoard.shipAllocation(testShip,3, "x");
+        expect(testGameBoard.shipAllocation(testShipTwo,3,"x")).toBe("cannot place 2 ships in the same spot");
+        testGameBoard.shipAllocation(testShipTwo, 14, "x");
+        expect(testGameBoard.gameBoard[14].shipObj).toBe(testShipTwo)
+
     });
     test('gameBoard shipAllocation works with y axis',() =>{
         testGameBoard.shipAllocation(testShip,3, "y");
@@ -40,14 +58,17 @@ describe('gameBoard has a function for allocating the ship',()=>{
         expect(testGameBoard.gameBoard[13].shipObj).toBe(testShip);
         expect(testGameBoard.gameBoard[23].shipObj).toBe(testShip);
         expect(testGameBoard.gameBoard[33].shipObj).toBe(testShip);
+        expect(testGameBoard.gameBoard[43].shipObj).toBe(testShip);
     });
-    test('gameBoard shipAllocation save the ship obj in the cells in which is present',() =>{
+    test('shipAllocation does not let you wrap around grid',() =>{
+        expect(testGameBoard.shipAllocation(testShipTwo,91 ,"y")).toBe("cannot place your ship here")
+    });
+    test('shipAllocation with axis y does not allow for multiple ships in same spot ',() =>{
         testGameBoard.shipAllocation(testShip,3, "x");
-        expect(testGameBoard.gameBoard[3].shipObj.name).toMatch(testShip.name);
-        expect(testGameBoard.gameBoard[3].shipObj.length).toBe(testShip.length);
-        expect(testGameBoard.gameBoard[3].shipObj.totalHits).toBe(testShip.totalHits);
-        expect(testGameBoard.gameBoard[4].shipObj.length).toBe(testShip.length);
-        expect(testGameBoard.gameBoard[6].shipObj.totalHits).toBe(testShip.totalHits);
+        expect(testGameBoard.shipAllocation(testShipTwo,3,"x")).toBe("cannot place 2 ships in the same spot");
+        testGameBoard.shipAllocation(testShipTwo, 14, "x");
+        expect(testGameBoard.gameBoard[14].shipObj).toBe(testShipTwo)
+
     });
 });
 

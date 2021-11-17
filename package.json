@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/andrea-maiolo/battleship#readme",
   "devDependencies": {
-    "jest": "^27.3.1"
+    "jest": "^27.3.1",
+    "webpack": "^5.64.1",
+    "webpack-cli": "^4.9.1"
   }
 }
