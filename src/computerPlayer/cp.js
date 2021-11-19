@@ -1,3 +1,4 @@
+const gameBoardFactory = require('../factories/gameBoardFactory');
 const sF = require('../factories/shipFactory');
         
 const cp = function(){
@@ -31,81 +32,43 @@ const cp = function(){
             return Math.floor(Math.random() * max);
         }
 
-        const shipAllocationForCP = function(ship,cell,axis){
-            switch (axis) {
-                case "x":
-                    let rowLength = 10;
-                    let whichRowAmIIn = 1 +  Math.floor(cell / rowLength);
-                    let maxCoordAvailable = (rowLength*whichRowAmIIn) - ship.length;
-                    if(cell > maxCoordAvailable){
-                        return "cannot place your ship here"
-                    }else{
-    
-                        let controlCells =[];
-                        let lastCell = (cell + ship.length) - 1;
-                        for (let i= cell; i<= lastCell; i++) {
-                            controlCells.push(i)
-                        }
-                        const isEmpty = (currentValue) => gameBoard[currentValue].shipObj === undefined;
-                        if(controlCells.every(isEmpty)){
-                            for(let i=0; i<ship.length; i++){
-                                gameBoard[cell+i].shipObj = ship;
-                            }
-                        }else{
-                            return "cannot place 2 ships in the same spot"
-                        }
-                    }
-                    break;
-                case "y":
-                    let controlCells =[];
-                    let currentCell = cell;
-                    for (let i= 0; i<ship.length; i++) {
-                        controlCells.push(currentCell)
-                        currentCell += 10
-                    }
-    
-                    const existenceCheck = (value) => gameBoard[value] ? true : false;
-                    if(!controlCells.every(existenceCheck)){
-                        return "cannot place your ship here";
-                    }else{
-                        const isEmpty = (currentValue) => gameBoard[currentValue].shipObj === undefined;
-                        if(controlCells.every(isEmpty)){
-                            let workingCell = cell;
-                            for(let i=0; i<ship.length; i++){
-                                gameBoard[workingCell].shipObj = ship
-                                workingCell +=10;
-                            }
-                        }else{
-                            return "cannot place 2 ships in the same spot"
-                        }
-                    }
-                    break;
+
+        function randomAllocationOfShipsForComputer(ship){
+            let randomAxis = getRandom(2);
+            let shipArrayLength
+                if(randomAxis === 0){
+                    shipArrayLength = [...Array(ship.length).keys()];
+                    randomAxis = 1
+                }else{
+                    shipArrayLength = [...Array(ship.length).keys()];
+                    randomAxis = 10;
+                    shipArrayLength = shipArrayLength.map(x => x * randomAxis)
+                };
+
+            let randomStart = getRandom(gameBoard.length - (ship.length * randomAxis));
+
+            //check if all cells are free 
+            // let shipArrayLength = [...Array(ship.length).keys()];
+            const isTaken = shipArrayLength.some(index => gameBoard[randomStart + index].shipObj);
+            //check that you are not going to wrap around the grid
+            let rowLength = 10;
+            const isAtRightEdge = shipArrayLength.some(index => (randomStart + index) % rowLength === rowLength - 1)
+            //or that you are not on the left edge
+            const isAtLeftEdge = shipArrayLength.some(index => (randomStart + index) % rowLength === 0);
+
+            if(!isTaken && !isAtLeftEdge && !isAtRightEdge){
+                for(let i=0; i<ship.length; i++){
+                    gameBoard[randomStart + shipArrayLength[i]].shipObj = ship;
+                }
+            }else{
+                randomAllocationOfShipsForComputer(ship)
             }
         };
-
-        const randomAllocation = (function(array){
-         
-            for (let j = 0; j < array.length; j++) {
-                let ship = array[j];
-                let legalMoves=[];
-    
-                for(let i=0; i< gameBoard.length; i++){
-                    if(!gameBoard[i].shipObj){
-                        legalMoves.push(gameBoard[i])
-                    }
-                }
-    
-                let randomCell = getRandom(legalMoves.length);
-                let randomAxis = getRandom(2);
-                if(randomAxis ==0){
-                    randomAxis = "x"
-                }else{ randomAxis = "y"}
-            
-                shipAllocationForCP(ship, randomCell, randomAxis)
-            }
-    
-        })(cpShipArray);
-    
+        randomAllocationOfShipsForComputer(cpShipArray[4]);
+        randomAllocationOfShipsForComputer(cpShipArray[3]);
+        randomAllocationOfShipsForComputer(cpShipArray[2]);
+        randomAllocationOfShipsForComputer(cpShipArray[1]);
+        randomAllocationOfShipsForComputer(cpShipArray[0]);
      
     //this is to read the enemy's fire
         const attackIsBeenShot = function(cell){
@@ -122,19 +85,28 @@ const cp = function(){
             }
         };
 
-        //this is the random attack from cp
-        const cpAttack = function(gb){
-            let legalAtt=[];
+    //     //this is the random attack from cp
+    //     const computerRandomAttack = function(gb){  
+    //         let legalAtt=[];
+
+    //         for(let i=0; i< gb.length; i++){
+    //                 if(!gb[i].isBeenShot){
+    //                     legalAtt.push(gb[i])
+    //                 }
+    //         }
         
-            for(let i=0; i< gameBoard.length; i++){
-                if(!gameBoard[i].isBeenShot){
-                    legalAtt.push(gameBoard[i])
-                }
-            }
+    //         let coordOfAttack = legalAtt[getRandom(legalAtt.length)];
+    //         // const attackEnemy = function(gb,coord){
+    //         //     if(arrayOfIllegalMoves.includes(coord)){
+    //         //         return "you can't shoot on the same cell"
+    //         //     }else{
+    //         //         arrayOfIllegalMoves.push(coord)
+    //         //         return gb.attackIsBeenShot(coord)
+    //         //     }
+    //         // }
+    //         return attackIsBeenShot(coord)
             
-            let coord = getRandom(legalAtt.length);
-            return attackIsBeenShot(coord)
-        }    
+    //     }
     
         // Gameboards should be able to report whether or not all of their ships have been sunk.
         const isTheGameOver = function(){
@@ -150,12 +122,12 @@ const cp = function(){
         
             return tempArr.every(allTrue)
         }
-    
+
         return {
             gameBoard:gameBoard,
             attackIsBeenShot:attackIsBeenShot,
             isTheGameOver: isTheGameOver,
-            cpAttack: cpAttack
+            // cpAttack: cpAttack
         }
     })();
 
