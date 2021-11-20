@@ -48,7 +48,6 @@ const cp = function(){
             let randomStart = getRandom(gameBoard.length - (ship.length * randomAxis));
 
             //check if all cells are free 
-            // let shipArrayLength = [...Array(ship.length).keys()];
             const isTaken = shipArrayLength.some(index => gameBoard[randomStart + index].shipObj);
             //check that you are not going to wrap around the grid
             let rowLength = 10;
@@ -72,9 +71,9 @@ const cp = function(){
      
     //this is to read the enemy's fire
         const attackIsBeenShot = function(cell){
-            gameBoard[cell].isBeenShot = true;
-            if(gameBoard[cell].shipObj){
-                let currentShip =  gameBoard[cell].shipObj;
+            this.gameBoard[cell].isBeenShot = true;
+            if(this.gameBoard[cell].shipObj){
+                let currentShip =  this.gameBoard[cell].shipObj;
                 currentShip.hit(cell);
                 if(currentShip.isSunk()){
                    return `your ${currentShip.name} has been sunk!`
@@ -85,28 +84,18 @@ const cp = function(){
             }
         };
 
-    //     //this is the random attack from cp
-    //     const computerRandomAttack = function(gb){  
-    //         let legalAtt=[];
-
-    //         for(let i=0; i< gb.length; i++){
-    //                 if(!gb[i].isBeenShot){
-    //                     legalAtt.push(gb[i])
-    //                 }
-    //         }
+        //this is the random attack function form the computer
+            let arrayOfIllegalMoves=[]; 
         
-    //         let coordOfAttack = legalAtt[getRandom(legalAtt.length)];
-    //         // const attackEnemy = function(gb,coord){
-    //         //     if(arrayOfIllegalMoves.includes(coord)){
-    //         //         return "you can't shoot on the same cell"
-    //         //     }else{
-    //         //         arrayOfIllegalMoves.push(coord)
-    //         //         return gb.attackIsBeenShot(coord)
-    //         //     }
-    //         // }
-    //         return attackIsBeenShot(coord)
-            
-    //     }
+            const randomAttackEnemy = function(gb){
+                let coord = getRandom(100);
+                if(arrayOfIllegalMoves.includes(coord)){
+                    randomAttackEnemy(gb)
+                }else{
+                    arrayOfIllegalMoves.push(coord)
+                    return gb.attackIsBeenShot(coord)
+                }
+            }
     
         // Gameboards should be able to report whether or not all of their ships have been sunk.
         const isTheGameOver = function(){
@@ -127,12 +116,11 @@ const cp = function(){
             gameBoard:gameBoard,
             attackIsBeenShot:attackIsBeenShot,
             isTheGameOver: isTheGameOver,
-            // cpAttack: cpAttack
+            randomAttackEnemy: randomAttackEnemy
         }
     })();
 
     return {
-        // cpPlayer: cpPlayer ,
         name: name,
         cpShipArray: cpShipArray,
         cpBoard: cpBoard,

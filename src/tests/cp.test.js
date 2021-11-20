@@ -20,10 +20,4 @@ describe('computerPLayer exists',()=>{
     test('computer array of ships is with 5 ships',()=>{
         expect(testC.cpShipArray.length).toBe(5);
     });
-    // test('are all ships in place', ()=>{
-    //     expect(testC.cpBoard)
-    // });
-    // test('computer attacks',()=>{
-    //     expect(testC.cpAttack(andyBoard)).toBe(andyBoard.attackIsBeenShot())
-    // });
 });   
