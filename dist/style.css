@@ -1,0 +1,38 @@
+body{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.playerGridCell{
+    width:auto;
+    height: auto;
+    border:1px solid #000;
+    background-color: beige;
+}
+
+#containerPlayer {
+    display: grid;
+    border: 10px solid #070707;
+    width: 500px;
+    height: 500px;
+}
+
+.computerGridCell{
+    width:auto;
+    height: auto;
+    border:1px solid #000;
+    background-color: beige;
+}
+
+#containerComputer {
+    display: grid;
+    border: 10px solid #070707;
+    width: 500px;
+    height: 500px;
+}
+
+.ship{
+    background-color: orange;
+}
