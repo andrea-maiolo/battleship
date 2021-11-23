@@ -16,4 +16,5 @@ const playerFactory = function(name){
         attackEnemy: attackEnemy
     }
 }
+
 module.exports = playerFactory

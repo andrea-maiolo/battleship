@@ -33,6 +33,35 @@ body{
     height: 500px;
 }
 
-.ship{
+
+.patrol{
     background-color: orange;
+}
+
+.curser{
+    background-color: pink;
+}
+
+.sub{
+    background-color: aqua;
+}
+
+.battleship{
+    background-color: green;
+}
+
+.admiral{
+    background-color: yellow;
+}
+
+.computerShip{
+    background-color: brown;
+}
+
+.computerGridCell[missed="missed"]{
+    background-color: blue;
+}
+
+.computerGridCell[hit]{
+   background-color: red;
 }

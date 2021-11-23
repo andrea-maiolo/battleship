@@ -80,7 +80,7 @@ const cp = function(){
                 }
                 
             }else{
-                return 'you missed'
+                this.gameBoard[cell].missed = "missed";
             }
         };
 
