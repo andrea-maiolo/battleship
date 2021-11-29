@@ -1,5 +1,2 @@
-import startOfGame from "./startOfGame";
-import gameOn from "./gameOn";
-// startOfGame()
-
+const gameOn = require("./gameOn");
 gameOn()

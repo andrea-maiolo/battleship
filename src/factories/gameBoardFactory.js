@@ -65,10 +65,9 @@ const gameBoardFactory = function(){
             currentShip.hit(cell);
             if(currentShip.isSunk()){
                return `your ${currentShip.name} has been sunk!`
+            }else{
+                this.gameBoard[cell].missed = "missed";
             }
-            
-        }else{
-            return 'you missed'
         }
     };
 

@@ -1,26 +1,17 @@
 {
-  "name": "battleship",
+  "name": "b2",
   "version": "1.0.0",
-  "description": "battleship game form The Odin Project",
-  "private": true,
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "watch": "jest watchAll"
+    "build": "browserify src/index.js -o dist/main.js",
+    "watch": "watchify src/index.js -o dist/main.js"
+
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/andrea-maiolo/battleship.git"
-  },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/andrea-maiolo/battleship/issues"
-  },
-  "homepage": "https://github.com/andrea-maiolo/battleship#readme",
   "devDependencies": {
-    "jest": "^27.3.1",
-    "webpack": "^5.64.1",
-    "webpack-cli": "^4.9.1"
+    "browserify": "^17.0.0",
+    "watchify": "^4.0.0"
   }
 }

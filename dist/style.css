@@ -1,8 +1,12 @@
-body{
+#grids{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+}
+
+#info{
+    display: inline;
 }
 
 .playerGridCell{

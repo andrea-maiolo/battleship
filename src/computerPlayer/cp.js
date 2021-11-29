@@ -1,4 +1,3 @@
-const gameBoardFactory = require('../factories/gameBoardFactory');
 const sF = require('../factories/shipFactory');
         
 const cp = function(){
@@ -77,10 +76,9 @@ const cp = function(){
                 currentShip.hit(cell);
                 if(currentShip.isSunk()){
                    return `your ${currentShip.name} has been sunk!`
+                }else{
+                    this.gameBoard[cell].missed = "missed";
                 }
-                
-            }else{
-                this.gameBoard[cell].missed = "missed";
             }
         };
 

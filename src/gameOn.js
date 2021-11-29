@@ -25,12 +25,13 @@ function gameOn(){
     andyBoard.shipAllocation(andyAdmiral, 54, "x");
 
     //this is dom
-    let body = document.querySelector('body');
+    let grids = document.querySelector('#grids');
     let containerPlayer = document.querySelector('#containerPlayer');
     let containerComputer = document.querySelector('#containerComputer');
+    let info = document.querySelector('#info');
 
     //remove start button
-    body.removeChild((body.childNodes[5]))   
+    grids.removeChild((grids.childNodes[5]))   
 
     //display player 's grid
     for (let i = 0; i < andyBoard.gameBoard.length; i++) {
@@ -65,8 +66,11 @@ function gameOn(){
     function callAttack(e){
         let attackedCell = e.path[0];
         if(e.path[1].id === "containerComputer"){
-            let referenceGrid = skynet.cpBoard  
-            andy.attackEnemy(referenceGrid, attackedCell.id)
+            let referenceGrid = skynet.cpBoard;
+            console.log(andy.attackEnemy(referenceGrid, attackedCell.id))  
+            // if(andy.attackEnemy(referenceGrid, attackedCell.id) === "you missed"){
+            //     info.innerHTML="missed";
+            // }
             setAttributesForCSS(attackedCell)
         }
     }
@@ -79,8 +83,9 @@ function gameOn(){
             const jsCell = skynet.cpBoard.gameBoard[domCell.id];
             if(jsCell.missed){
                 domCell.setAttribute("missed", 'missed');
-            }else if(!jsCell.missed && jsCell.shipObj.totalHits.length > 0){
-                domCell.setAttribute("hit","hit")
+                console.log(jsCell)
+            // }else if(!jsCell.missed && jsCell.shipObj.totalHits.length > 0){
+            //     domCell.setAttribute("hit","hit")
             }
         }
     }
