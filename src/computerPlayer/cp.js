@@ -1,5 +1,5 @@
 const sF = require('../factories/shipFactory');
-        
+
 const cp = function(){
     const name = "Skynet";
 
@@ -67,53 +67,41 @@ const cp = function(){
         randomAllocationOfShipsForComputer(cpShipArray[2]);
         randomAllocationOfShipsForComputer(cpShipArray[1]);
         randomAllocationOfShipsForComputer(cpShipArray[0]);
-     
-    //this is to read the enemy's fire
-        const attackIsBeenShot = function(cell){
-            this.gameBoard[cell].isBeenShot = true;
-            if(this.gameBoard[cell].shipObj){
-                let currentShip =  this.gameBoard[cell].shipObj;
+
+        
+       
+    const attackIsBeenShot = function(cell){
+        if(gameBoard[cell].isBeenShot){
+            console.log(cell)
+            return console.log("you cannot shoot in the same cell twice, player should repeat the option")
+        }else{
+            gameBoard[cell].isBeenShot = true;
+            console.log(cell)
+            if(gameBoard[cell].shipObj){
+                let currentShip =  gameBoard[cell].shipObj;
                 currentShip.hit(cell);
-                if(currentShip.isSunk()){
-                   return `your ${currentShip.name} has been sunk!`
-                }else{
-                    this.gameBoard[cell].missed = "missed";
-                }
             }
-        };
+            return cell
+        }
+    };
 
         //this is the random attack function form the computer
             let arrayOfIllegalMoves=[]; 
         
             const randomAttackEnemy = function(gb){
                 let coord = getRandom(100);
+                console.log(coord)
                 if(arrayOfIllegalMoves.includes(coord)){
-                    randomAttackEnemy(gb)
+                   return randomAttackEnemy(gb)
                 }else{
                     arrayOfIllegalMoves.push(coord)
                     return gb.attackIsBeenShot(coord)
                 }
             }
-    
-        // Gameboards should be able to report whether or not all of their ships have been sunk.
-        const isTheGameOver = function(){
-            let arrayOfShips=[];
-            let tempArr= [];
-            for(let i=0; i< gameBoard.length; i++){
-                if(gameBoard[i].shipObj){
-                    arrayOfShips.push(gameBoard[i].shipObj)
-                    arrayOfShips.forEach(ship => tempArr.push(ship.isSunk()));
-                }
-            }
-            const allTrue = (currentValue) => currentValue ==true;
-        
-            return tempArr.every(allTrue)
-        }
 
         return {
             gameBoard:gameBoard,
             attackIsBeenShot:attackIsBeenShot,
-            isTheGameOver: isTheGameOver,
             randomAttackEnemy: randomAttackEnemy
         }
     })();

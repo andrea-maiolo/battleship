@@ -62,10 +62,10 @@
     background-color: brown;
 }
 
-.computerGridCell[missed="missed"]{
+[missed="missed"]{
     background-color: blue;
 }
 
-.computerGridCell[hit]{
+[hit]{
    background-color: red;
 }

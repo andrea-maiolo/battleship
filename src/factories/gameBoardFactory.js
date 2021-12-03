@@ -59,39 +59,18 @@ const gameBoardFactory = function(){
     };
 
     const attackIsBeenShot = function(cell){
-        gameBoard[cell].isBeenShot = true;
-        if(gameBoard[cell].shipObj){
-            let currentShip =  gameBoard[cell].shipObj;
-            currentShip.hit(cell);
-            if(currentShip.isSunk()){
-               return `your ${currentShip.name} has been sunk!`
-            }else{
-                this.gameBoard[cell].missed = "missed";
+            gameBoard[cell].isBeenShot = true;
+            if(gameBoard[cell].shipObj){
+                let currentShip =  gameBoard[cell].shipObj;
+                currentShip.hit(cell);
             }
-        }
+            return cell
     };
-
-    // Gameboards should be able to report whether or not all of their ships have been sunk.
-    const isTheGameOver = function(){
-        let arrayOfShips=[];
-        let tempArr= [];
-        for(let i=0; i< gameBoard.length; i++){
-            if(gameBoard[i].shipObj){
-                arrayOfShips.push(gameBoard[i].shipObj)
-                arrayOfShips.forEach(ship => tempArr.push(ship.isSunk()));
-            }
-        }
-        const allTrue = (currentValue) => currentValue ==true;
-    
-        return tempArr.every(allTrue)
-
-    }
 
     return {
         gameBoard:gameBoard,
         shipAllocation:shipAllocation,
         attackIsBeenShot:attackIsBeenShot,
-        isTheGameOver: isTheGameOver
     }
 }
 
