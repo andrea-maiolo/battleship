@@ -2,8 +2,6 @@ const cp= require ("./computerPlayer/cp");
 const playerFactory =  require("./factories/playerFactory");
 const gameBoardFactory =require("./factories/gameBoardFactory");
 const shipFactory = require("./factories/shipFactory");
-const startOfGame = require("./startOfGame");
-const { classBody } = require("@babel/types");
 
 
 function gameOn(){

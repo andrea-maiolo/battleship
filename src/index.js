@@ -1,2 +1,4 @@
 const gameOn = require("./gameOn");
-gameOn()
+const startOfGame = require("./startOfGame");
+//gameOn()
+startOfGame()

@@ -26,6 +26,7 @@ const gameBoardFactory = function(){
                         for(let i=0; i<ship.length; i++){
                             this.gameBoard[cell+i].shipObj = ship;
                         }
+                        console.log(this.gameBoard)
                     }else{
                         return "cannot place 2 ships in the same spot"
                     }
