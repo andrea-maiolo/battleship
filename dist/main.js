@@ -277,9 +277,7 @@ function gameOn(){
     let grids = document.querySelector('#grids');
     let containerPlayer = document.querySelector('#containerPlayer');
     let containerComputer = document.querySelector('#containerComputer');
-
-    //remove start button
-    grids.removeChild((grids.childNodes[5]))   
+  
 
     //display player 's grid
     for (let i = 0; i < andyBoard.gameBoard.length; i++) {
@@ -425,7 +423,7 @@ function startOfGame() {
     playerName.type = 'text';
     playerName.maxLength = 8;
     const startButton = document.createElement('button');
-    startButton.innerHTML = 'Start';
+    startButton.innerHTML = 'Continue';
 
 
     body.appendChild(battleshipTitle);
@@ -482,7 +480,10 @@ function startOfGame() {
         grids.id = 'grids';
         const containerPlayer = document.createElement('div');
         containerPlayer.id = 'containerPlayer';
+        const shipContainer = document.createElement('div');
+        shipContainer.id="shipContainer";
         grids.appendChild(containerPlayer);
+        grids.appendChild(shipContainer)
         //create button for axis shift
         const axisButton = document.createElement('button');
         axisButton.classList.add("axisButton");
@@ -516,60 +517,71 @@ function startOfGame() {
             }
         });
 
-        let player1Patrol = new shipFactory("patrol");
-        let player1Curser = new shipFactory("curser");
-        let player1Sub = new shipFactory("sub");
-        let player1Battleship = new shipFactory("battleship");
-        let player1Admiral = new shipFactory("admiral");
-        ships = [];
-        ships.push(player1Patrol);
-        ships.push(player1Curser);
-        ships.push(player1Sub);
-        ships.push(player1Battleship);
-        ships.push(player1Admiral);
+        // let player1Patrol = new shipFactory("patrol");
+        // let player1Curser = new shipFactory("curser");
+        // let player1Sub = new shipFactory("sub");
+        // let player1Battleship = new shipFactory("battleship");
+        // let player1Admiral = new shipFactory("admiral");
+        // ships = [];
+        // ships.push(player1Patrol);
+        // ships.push(player1Curser);
+        // ships.push(player1Sub);
+        // ships.push(player1Battleship);
+        // ships.push(player1Admiral);
 
-        let message = document.createElement('p');
-        message.innerHTML = `${player1Obj.player1.name}, place your ${player1Patrol.name}`;
-        body.insertBefore(message, body.children[0]);
+        let patrolForDrag = document.createElement('div');
+        patrolForDrag.id = "patrol";
+        patrolForDrag.classList.add("shipsDom")
+        patrolForDrag.draggable = true;
+        let curserForDrag = document.createElement('div');
+        curserForDrag.id = "curser";
+        curserForDrag.classList.add("shipsDom")
+        curserForDrag.draggable = true;
+        let subForDrag = document.createElement('div');
+        subForDrag.id = "sub";
+        subForDrag.classList.add("shipsDom")
+        subForDrag.draggable = true;
+        let battleshipForDrag = document.createElement('div');
+        battleshipForDrag.id = "battleship";
+        battleshipForDrag.classList.add("shipsDom")
+        battleshipForDrag.draggable = true;
+        let admiralForDrag = document.createElement('div');
+        admiralForDrag.id = "admiral";        
+        admiralForDrag.classList.add("shipsDom")
+        admiralForDrag.draggable = true;
+        shipContainer.appendChild(patrolForDrag);
+        shipContainer.appendChild(curserForDrag);
+        shipContainer.appendChild(subForDrag);
+        shipContainer.appendChild(battleshipForDrag);
+        shipContainer.appendChild(admiralForDrag);
 
-        let firstShip = document.createElement('div');
-        firstShip.style.width = '100px';
-        firstShip.style.height = '50px';
-        firstShip.style.backgroundColor = "green";
-        // firstShip.style.zIndex = 1;
-        firstShip.id = "fs";
+        let myShipsDom = document.querySelectorAll('.shipsDom');
+        myShipsDom.forEach(ship => ship.addEventListener('dragstart', function drag(e){
+            e.dataTransfer.setData("text", e.target.id)
+        }));
 
-
-        containerPlayer.addEventListener('mousemove', function(e) {
-            containerPlayer.appendChild(firstShip)
-            e.preventDefault();
-            let x = (e.clientX - 15);
-            let y = (e.clientY - 15);
-            firstShip.style.position = "absolute"
-            firstShip.style.left = x + "px";
-            firstShip.style.top = y + "px";
-        });
-
-
-
-
-        containerPlayer.addEventListener('click', function(e) {
-            let targetCell = e.path[0].id;
-            if (targetCell == "containerPlayer") {
-                return
-            } else {
-                checkShipPlacement(targetCell)
+        let gridCells = document.querySelectorAll('.playerGridCell');
+        gridCells.forEach(cell => cell.addEventListener("dragover",
+            function allowDrag(e){
+                e.preventDefault()
             }
-        });
+        ));
 
-        const checkShipPlacement = function(targetCell) {
-            //get ship from somewhere else
-            targetCell = parseInt(targetCell);
-            let player1Patrol = new shipFactory("patrol");
-            player1Obj.grid.shipAllocation(player1Patrol, targetCell, axisButton.value)
-        }
+        gridCells.forEach(cell=> cell.addEventListener('drop',
+            function drop(e){
+            e.preventDefault();
+            let data = e.dataTransfer.getData('text');
+            let currentShip = document.querySelector(`#${data}`);
+            shipContainer.removeChild(currentShip)
+            let ship = new shipFactory(data);
+            let c = parseInt(e.path[0].id);
+            player1Obj.grid.shipAllocation(ship, c, axisButton.value)
+            }
+        )) 
 
-
+        // let message = document.createElement('p');
+        // message.innerHTML = `${player1Obj.player1.name}, place your ${player1Patrol.name}`;
+        // body.insertBefore(message, body.children[0]);
     }
 }
 

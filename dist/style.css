@@ -37,25 +37,45 @@
     height: 500px;
 }
 
+#shipContainer{
+    border: 5px solid black;
+    width:300px;
+    height: 300px
+}
 
-.patrol{
+#patrol{
     background-color: orange;
+    width:100px;
+    height:40px;
+    margin:1em;
 }
 
-.curser{
+#curser{
     background-color: pink;
+    width:150px;
+    height:40px;
+    margin:1em;
 }
 
-.sub{
+#sub{
     background-color: aqua;
+    width:150px;
+    height:40px;
+    margin:1em;
 }
 
-.battleship{
+#battleship{
     background-color: green;
+    width:200px;
+    height:40px;
+    margin:1em;
 }
 
-.admiral{
+#admiral{
     background-color: yellow;
+    width:250px;
+    height:40px;
+    margin:1em;
 }
 
 .computerShip{

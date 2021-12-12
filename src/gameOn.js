@@ -27,9 +27,7 @@ function gameOn(){
     let grids = document.querySelector('#grids');
     let containerPlayer = document.querySelector('#containerPlayer');
     let containerComputer = document.querySelector('#containerComputer');
-
-    //remove start button
-    grids.removeChild((grids.childNodes[5]))   
+  
 
     //display player 's grid
     for (let i = 0; i < andyBoard.gameBoard.length; i++) {
