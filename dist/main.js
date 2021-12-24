@@ -144,7 +144,7 @@ const gameBoardFactory = function(){
                         for(let i=0; i<ship.length; i++){
                             this.gameBoard[cell+i].shipObj = ship;
                         }
-                        console.log(this.gameBoard)
+                        return (this.gameBoard)
                     }else{
                         return "cannot place 2 ships in the same spot"
                     }
@@ -169,6 +169,7 @@ const gameBoardFactory = function(){
                             this.gameBoard[workingCell].shipObj = ship
                             workingCell +=10;
                         }
+                        return (this.gameBoard)
                     }else{
                         return "cannot place 2 ships in the same spot"
                     }
@@ -472,10 +473,6 @@ function startOfGame() {
     }
 
     function playerShipPlacement(player1Obj) {
-        //create this
-        //  <!-- <div id="grids">
-        // <div id="containerPlayer"></div>
-        // </div> -->
         const grids = document.createElement('div');
         grids.id = 'grids';
         const containerPlayer = document.createElement('div');
@@ -501,33 +498,8 @@ function startOfGame() {
             cellDiv.classList.add('playerGridCell')
             containerPlayer.appendChild(cellDiv);
         }
-
-        //making the grid a grid(if it makes sense)
         containerPlayer.style.gridTemplateColumns = "repeat(10, 1fr)";
         containerPlayer.style.gridTemplateRows = "repeat(10, 1fr)";
-
-        //change axis
-        axisButton.addEventListener('click', (e) => {
-            if (e.target.value == "x") {
-                e.target.value = "y";
-                e.target.innerHTML = "Y";
-            } else {
-                e.target.value = "x";
-                e.target.innerHTML = "X";
-            }
-        });
-
-        // let player1Patrol = new shipFactory("patrol");
-        // let player1Curser = new shipFactory("curser");
-        // let player1Sub = new shipFactory("sub");
-        // let player1Battleship = new shipFactory("battleship");
-        // let player1Admiral = new shipFactory("admiral");
-        // ships = [];
-        // ships.push(player1Patrol);
-        // ships.push(player1Curser);
-        // ships.push(player1Sub);
-        // ships.push(player1Battleship);
-        // ships.push(player1Admiral);
 
         let patrolForDrag = document.createElement('div');
         patrolForDrag.id = "patrol";
@@ -554,6 +526,17 @@ function startOfGame() {
         shipContainer.appendChild(subForDrag);
         shipContainer.appendChild(battleshipForDrag);
         shipContainer.appendChild(admiralForDrag);
+        
+        //change axis
+        axisButton.addEventListener('click', (e) => {
+            if (e.target.value == "x") {
+                e.target.value = "y";
+                e.target.innerHTML = "Y";
+            } else {
+                e.target.value = "x";
+                e.target.innerHTML = "X";
+            }
+        });
 
         let myShipsDom = document.querySelectorAll('.shipsDom');
         myShipsDom.forEach(ship => ship.addEventListener('dragstart', function drag(e){
@@ -569,19 +552,23 @@ function startOfGame() {
 
         gridCells.forEach(cell=> cell.addEventListener('drop',
             function drop(e){
-            e.preventDefault();
-            let data = e.dataTransfer.getData('text');
-            let currentShip = document.querySelector(`#${data}`);
-            shipContainer.removeChild(currentShip)
-            let ship = new shipFactory(data);
-            let c = parseInt(e.path[0].id);
-            player1Obj.grid.shipAllocation(ship, c, axisButton.value)
+                e.preventDefault();
+                let data = e.dataTransfer.getData('text');
+                let currentShip = document.querySelector(`#${data}`);
+                let ship = new shipFactory(data);
+                let c = parseInt(e.path[0].id);
+                if(typeof (player1Obj.grid.shipAllocation(ship, c, axisButton.value)) == "string"){
+                    let errorMessage = document.createElement('p');
+                    errorMessage.id="errorMessage"
+                    errorMessage.innerHTML = (player1Obj.grid.shipAllocation(ship, c, axisButton.value))
+                    body.appendChild(errorMessage);
+                }else{ 
+                    shipContainer.removeChild(currentShip)
+                    console.log(player1Obj.grid.gameBoard)
+                    //add class so that you can see your own ships
+                }
             }
         )) 
-
-        // let message = document.createElement('p');
-        // message.innerHTML = `${player1Obj.player1.name}, place your ${player1Patrol.name}`;
-        // body.insertBefore(message, body.children[0]);
     }
 }
 
