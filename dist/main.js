@@ -290,7 +290,7 @@ function gameOn() {
 
     const isGameOver = function() {
         const allSink = (value) => value == true;
-        let a = andyBoard.gameBoard;
+        let a = player1Obj.grid.gameBoard;
         let b = skynet.cpBoard.gameBoard;
         let temporaryArray1 = [];
         let temporaryArray2 = [];
@@ -323,7 +323,6 @@ function gameOn() {
         }
     }
 
-
     //this function set the property for the color of computer's grid
     const setCSSAttributes = function(grid, domCell) {
         let jsCell
@@ -348,7 +347,7 @@ function gameOn() {
         isGameOver()
     }
 
-    let round = andy.name;
+    let round = player1Obj.name;
 
     const whoIsPlaying = function() {
         if (round == andy.name) {
