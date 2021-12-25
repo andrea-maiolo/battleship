@@ -1,6 +1,7 @@
 const playerFactory = require("./factories/playerFactory");
 const gameBoardFactory = require("./factories/gameBoardFactory");
 const shipFactory = require("./factories/shipFactory");
+const gameOn = require("./gameOn");
 
 function startOfGame() {
 
@@ -15,6 +16,8 @@ function startOfGame() {
     playerName.maxLength = 8;
     const startButton = document.createElement('button');
     startButton.innerHTML = 'Continue';
+    const startGameButton = document.createElement('button');
+
 
 
     body.appendChild(battleshipTitle);
@@ -35,7 +38,6 @@ function startOfGame() {
     }
 
     startButton.addEventListener('click', playerCheck);
-
 
     function createPlayer() {
         //removes everything that is not needed
@@ -68,7 +70,7 @@ function startOfGame() {
         const containerPlayer = document.createElement('div');
         containerPlayer.id = 'containerPlayer';
         const shipContainer = document.createElement('div');
-        shipContainer.id="shipContainer";
+        shipContainer.id = "shipContainer";
         grids.appendChild(containerPlayer);
         grids.appendChild(shipContainer)
         //create button for axis shift
@@ -108,7 +110,7 @@ function startOfGame() {
         battleshipForDrag.classList.add("shipsDom")
         battleshipForDrag.draggable = true;
         let admiralForDrag = document.createElement('div');
-        admiralForDrag.id = "admiral";        
+        admiralForDrag.id = "admiral";
         admiralForDrag.classList.add("shipsDom")
         admiralForDrag.draggable = true;
         shipContainer.appendChild(patrolForDrag);
@@ -116,7 +118,7 @@ function startOfGame() {
         shipContainer.appendChild(subForDrag);
         shipContainer.appendChild(battleshipForDrag);
         shipContainer.appendChild(admiralForDrag);
-        
+
         //change axis
         axisButton.addEventListener('click', (e) => {
             if (e.target.value == "x") {
@@ -131,37 +133,69 @@ function startOfGame() {
         });
 
         let myShipsDom = document.querySelectorAll('.shipsDom');
-        myShipsDom.forEach(ship => ship.addEventListener('dragstart', function drag(e){
+        myShipsDom.forEach(ship => ship.addEventListener('dragstart', function drag(e) {
+            if (axisButton.value == "y") {
+                console.log(e)
+                // ship.style.transform = 'rotate(90deg)';
+            }
             e.dataTransfer.setData("text", e.target.id)
         }));
 
         let gridCells = document.querySelectorAll('.playerGridCell');
         gridCells.forEach(cell => cell.addEventListener("dragover",
-            function allowDrag(e){
+            function allowDrag(e) {
                 e.preventDefault()
             }
         ));
 
-        gridCells.forEach(cell=> cell.addEventListener('drop',
-            function drop(e){
+        gridCells.forEach(cell => cell.addEventListener('drop',
+            function drop(e) {
                 e.preventDefault();
                 let data = e.dataTransfer.getData('text');
                 let currentShip = document.querySelector(`#${data}`);
                 let ship = new shipFactory(data);
                 let c = parseInt(e.path[0].id);
-                if(typeof (player1Obj.grid.shipAllocation(ship, c, axisButton.value)) == "string"){
+                if (typeof(player1Obj.grid.shipAllocation(ship, c, axisButton.value)) == "string") {
                     let errorMessage = document.createElement('p');
-                    errorMessage.id="errorMessage"
+                    errorMessage.id = "errorMessage"
                     errorMessage.innerHTML = (player1Obj.grid.shipAllocation(ship, c, axisButton.value))
                     body.appendChild(errorMessage);
-                }else{ 
+                } else {
                     shipContainer.removeChild(currentShip)
-                    console.log(player1Obj.grid.gameBoard)
-                    //add class so that you can see your own ships
+                    for (let i = 0; i < player1Obj.grid.gameBoard.length; i++) {
+                        if (player1Obj.grid.gameBoard[i].shipObj) {
+                            //where j is the id of the grid
+                            let j = player1Obj.grid.gameBoard[i].id;
+                            gridCells.forEach(cell => {
+                                if(cell.id == j){
+                                    cell.classList.add('playerShip')
+                                }
+                            })
+                        }
+                    }
                 }
+                checkEmptynessOfShipContainer()
             }
-        )) 
+        ))
+
+        const checkEmptynessOfShipContainer = function(){
+            if ( shipContainer.hasChildNodes() == 0 ) {
+                grids.removeChild(shipContainer);
+                let em = document.querySelectorAll('#errorMessage');
+                em = Array.from(em);
+                em.forEach(e => {
+                    body.removeChild(e)
+                });
+                startGameButton.id ="startGameButton";
+                startGameButton.innerHTML ='Start Game'
+                body.appendChild(startGameButton);
+           }
+        }
     }
+    startGameButton.addEventListener('click',()=>{
+        console.log('let s begin')
+        gameOn()
+    })
 }
 
 module.exports = startOfGame
