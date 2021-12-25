@@ -5,10 +5,6 @@
     justify-content: space-around;
 }
 
-#info{
-    display: inline;
-}
-
 .playerGridCell{
     width:auto;
     height: auto;
@@ -41,6 +37,10 @@
     border: 5px solid black;
     width:300px;
     height: 300px
+}
+
+.shipContainer90{
+    transform: rotate(90deg);
 }
 
 #patrol{
@@ -92,4 +92,13 @@
 
 #errorMessage{
     font-size:larger;
+}
+
+.axisButton{
+    background-color:rgb(79, 206, 79);
+    width:30px;
+    height:30px;
+    margin: 1em;
+    font-size: large;
+    font-weight: 600;
 }

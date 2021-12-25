@@ -122,9 +122,11 @@ function startOfGame() {
             if (e.target.value == "x") {
                 e.target.value = "y";
                 e.target.innerHTML = "Y";
+                shipContainer.classList.add("shipContainer90")
             } else {
                 e.target.value = "x";
                 e.target.innerHTML = "X";
+                shipContainer.classList.remove("shipContainer90")
             }
         });
 
