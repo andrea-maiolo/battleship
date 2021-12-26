@@ -134,10 +134,6 @@ function startOfGame() {
 
         let myShipsDom = document.querySelectorAll('.shipsDom');
         myShipsDom.forEach(ship => ship.addEventListener('dragstart', function drag(e) {
-            if (axisButton.value == "y") {
-                console.log(e)
-                // ship.style.transform = 'rotate(90deg)';
-            }
             e.dataTransfer.setData("text", e.target.id)
         }));
 
@@ -191,11 +187,11 @@ function startOfGame() {
                 body.appendChild(startGameButton);
            }
         }
+        startGameButton.addEventListener('click',()=>{
+            console.log('let s begin')
+            gameOn(player1Obj)
+        })
     }
-    startGameButton.addEventListener('click',()=>{
-        console.log('let s begin')
-        gameOn()
-    })
 }
 
 module.exports = startOfGame

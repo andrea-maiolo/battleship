@@ -92,6 +92,7 @@ const cp = function() {
         let arrayOfIllegalMoves = [];
 
         const randomAttackEnemy = function(gb) {
+            console.log(gb)
             let coord = getRandom(100);
             console.log(coord)
             if (arrayOfIllegalMoves.includes(coord)) {

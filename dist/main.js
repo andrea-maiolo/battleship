@@ -93,6 +93,7 @@ const cp = function() {
         let arrayOfIllegalMoves = [];
 
         const randomAttackEnemy = function(gb) {
+            console.log(gb)
             let coord = getRandom(100);
             console.log(coord)
             if (arrayOfIllegalMoves.includes(coord)) {
@@ -259,15 +260,16 @@ const gameBoardFactory = require("./factories/gameBoardFactory");
 const shipFactory = require("./factories/shipFactory");
 
 
-function gameOn() {
+function gameOn(player1Obj) {
 
+    console.log(player1Obj)
     //this is initialization
     const skynet = cp();
 
     //this is dom
-    let grids = document.querySelector('#grids');
-    let containerPlayer = document.querySelector('#containerPlayer');
-    let containerComputer = document.createElement('div');
+    const grids = document.querySelector('#grids');
+    const containerPlayer = document.querySelector('#containerPlayer');
+    const containerComputer = document.createElement('div');
     containerComputer.id = 'containerComputer';
     grids.appendChild(containerComputer);
 
@@ -337,7 +339,7 @@ function gameOn() {
                 gridCell.setAttribute("hit", "hit")
             }
         } else {
-            let gridCell = document.getElementById(`p${jsCell.id}`)
+            let gridCell = document.getElementById(jsCell.id)
             if (jsCell.isBeenShot && (!jsCell.shipObj)) {
                 gridCell.setAttribute("missed", 'missed');
             } else if (jsCell.isBeenShot && jsCell.shipObj.totalHits.length > 0) {
@@ -350,17 +352,17 @@ function gameOn() {
     let round = player1Obj.name;
 
     const whoIsPlaying = function() {
-        if (round == andy.name) {
+        if (round == player1Obj.name) {
             round = skynet.name;
             return round
         } else {
-            round = andy.name;
+            round = player1Obj.name;
             return round
         }
     }
 
     const play = function() {
-        if (round == andy.name) {
+        if (round == player1Obj.name) {
             whoIsPlaying();
             console.log("my move")
             containerComputer.addEventListener('click', function(e) {
@@ -372,8 +374,8 @@ function gameOn() {
         } else {
             console.log("skynet's move")
             whoIsPlaying();
-            let c = skynet.cpBoard.randomAttackEnemy(andyBoard);
-            setCSSAttributes(andyBoard, c)
+            let c = skynet.cpBoard.randomAttackEnemy(player1Obj.grid);
+            setCSSAttributes(player1Obj.grid, c)
         }
     }
     play()
@@ -524,10 +526,6 @@ function startOfGame() {
 
         let myShipsDom = document.querySelectorAll('.shipsDom');
         myShipsDom.forEach(ship => ship.addEventListener('dragstart', function drag(e) {
-            if (axisButton.value == "y") {
-                console.log(e)
-                // ship.style.transform = 'rotate(90deg)';
-            }
             e.dataTransfer.setData("text", e.target.id)
         }));
 
@@ -581,11 +579,11 @@ function startOfGame() {
                 body.appendChild(startGameButton);
            }
         }
+        startGameButton.addEventListener('click',()=>{
+            console.log('let s begin')
+            gameOn(player1Obj)
+        })
     }
-    startGameButton.addEventListener('click',()=>{
-        console.log('let s begin')
-        gameOn()
-    })
 }
 
 module.exports = startOfGame
