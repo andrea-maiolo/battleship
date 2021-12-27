@@ -3,21 +3,21 @@ const gameBoardFactory = require('../factories/gameBoardFactory');
 const shipFactory = require('../factories/shipFactory');
 const playerFactory = require('../factories/playerFactory');
 
-describe('computerPLayer exists',()=>{
-    beforeEach(()=>{
+describe('computerPLayer exists', () => {
+    beforeEach(() => {
         testC = new cp();
         andy = new playerFactory("andy");
         andyBoard = new gameBoardFactory();
         andyShip = new shipFactory("patrol");
         andyBoard.shipAllocation(andyShip, 3, "x")
     });
-    test('computer has a player',()=>{
+    test('computer has a player', () => {
         expect(testC.name).toBe('Skynet');
     });
-    test('computer has a board',()=>{
+    test('computer has a board', () => {
         expect(testC.cpBoard.gameBoard.length).toBe(100);
     });
-    test('computer array of ships is with 5 ships',()=>{
+    test('computer array of ships is with 5 ships', () => {
         expect(testC.cpShipArray.length).toBe(5);
     });
-});   
+});
