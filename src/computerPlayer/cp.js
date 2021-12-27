@@ -17,8 +17,6 @@ const cp = function() {
     cpShipArray.push(cBattleship);
     cpShipArray.push(cAdmiral);
 
-
-
     const cpBoard = (function() {
         const gameBoard = [];
         const initialize = (function() {
@@ -33,7 +31,6 @@ const cp = function() {
         const getRandom = function(max) {
             return Math.floor(Math.random() * max);
         }
-
 
         function randomAllocationOfShipsForComputer(ship) {
             let randomAxis = getRandom(2);
@@ -71,11 +68,8 @@ const cp = function() {
         randomAllocationOfShipsForComputer(cpShipArray[1]);
         randomAllocationOfShipsForComputer(cpShipArray[0]);
 
-
-
         const attackIsBeenShot = function(cell) {
             if (gameBoard[cell].isBeenShot) {
-                console.log(cell)
                 return console.log("you cannot shoot in the same cell twice, player should repeat the option")
             } else {
                 gameBoard[cell].isBeenShot = true;
@@ -92,9 +86,7 @@ const cp = function() {
         let arrayOfIllegalMoves = [];
 
         const randomAttackEnemy = function(gb) {
-            console.log(gb)
             let coord = getRandom(100);
-            console.log(coord)
             if (arrayOfIllegalMoves.includes(coord)) {
                 return randomAttackEnemy(gb)
             } else {

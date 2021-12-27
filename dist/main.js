@@ -18,8 +18,6 @@ const cp = function() {
     cpShipArray.push(cBattleship);
     cpShipArray.push(cAdmiral);
 
-
-
     const cpBoard = (function() {
         const gameBoard = [];
         const initialize = (function() {
@@ -34,7 +32,6 @@ const cp = function() {
         const getRandom = function(max) {
             return Math.floor(Math.random() * max);
         }
-
 
         function randomAllocationOfShipsForComputer(ship) {
             let randomAxis = getRandom(2);
@@ -72,11 +69,8 @@ const cp = function() {
         randomAllocationOfShipsForComputer(cpShipArray[1]);
         randomAllocationOfShipsForComputer(cpShipArray[0]);
 
-
-
         const attackIsBeenShot = function(cell) {
             if (gameBoard[cell].isBeenShot) {
-                console.log(cell)
                 return console.log("you cannot shoot in the same cell twice, player should repeat the option")
             } else {
                 gameBoard[cell].isBeenShot = true;
@@ -93,9 +87,7 @@ const cp = function() {
         let arrayOfIllegalMoves = [];
 
         const randomAttackEnemy = function(gb) {
-            console.log(gb)
             let coord = getRandom(100);
-            console.log(coord)
             if (arrayOfIllegalMoves.includes(coord)) {
                 return randomAttackEnemy(gb)
             } else {
@@ -255,32 +247,24 @@ const shipFactory = function(name) {
 module.exports = shipFactory
 },{}],5:[function(require,module,exports){
 const cp = require("./computerPlayer/cp");
-const playerFactory = require("./factories/playerFactory");
-const gameBoardFactory = require("./factories/gameBoardFactory");
-const shipFactory = require("./factories/shipFactory");
-
 
 function gameOn(player1Obj) {
 
-    console.log(player1Obj)
     //this is initialization
     const skynet = cp();
 
     //this is dom
-    const grids = document.querySelector('#grids');
-    const containerPlayer = document.querySelector('#containerPlayer');
+    const shipPlacementStage = document.querySelector('#shipPlacementStage');
+    const startGameButton= document.querySelector('#startGameButton');
+    shipPlacementStage.removeChild(startGameButton)
     const containerComputer = document.createElement('div');
     containerComputer.id = 'containerComputer';
-    grids.appendChild(containerComputer);
+    shipPlacementStage.appendChild(containerComputer);
 
     //display computer's grid
     for (let i = 0; i < skynet.cpBoard.gameBoard.length; i++) {
         let cell = skynet.cpBoard.gameBoard[i];
         let cellDiv = document.createElement('div');
-        //hide this later
-        if (cell.shipObj) {
-            cellDiv.classList.add("computerShip")
-        }
         cellDiv.id = `c${cell.id}`;
         cellDiv.classList.add('computerGridCell')
         containerComputer.appendChild(cellDiv);
@@ -307,19 +291,33 @@ function gameOn(player1Obj) {
             }
         }
         if (temporaryArray1.every(allSink)) {
-            alert('game is over')
             let body = document.querySelector('body');
-            body.removeChild(grids);
+            body.removeChild(shipPlacementStage);
             let h1 = document.createElement('h1');
+            h1.id='finalMessage';
             h1.innerHTML = "You lost!";
+            let replay = document.createElement('button');
+            replay.innerHTML='Replay';
+            replay.classList.add('replayButton');
             body.appendChild(h1);
+            body.appendChild(replay);
+            replay.addEventListener('click',()=>{
+                location.reload()
+            })
         } else if (temporaryArray2.every(allSink)) {
-            alert('game is over')
             let body = document.querySelector('body');
-            body.removeChild(grids);
+            body.removeChild(shipPlacementStage);
             let h1 = document.createElement('h1');
+            h1.id='finalMessage';
             h1.innerHTML = "You won!";
+            let replay = document.createElement('button');
+            replay.innerHTML='Replay';
+            replay.classList.add('replayButton');
             body.appendChild(h1);
+            body.appendChild(replay);
+            replay.addEventListener('click',()=>{
+                location.reload()
+            })
         } else {
             return play()
         }
@@ -364,7 +362,6 @@ function gameOn(player1Obj) {
     const play = function() {
         if (round == player1Obj.name) {
             whoIsPlaying();
-            console.log("my move")
             containerComputer.addEventListener('click', function(e) {
                 let attackedCell = e.path[0].id;
                 attackedCell = attackedCell.replace(/[a-z]/g, "");
@@ -372,7 +369,6 @@ function gameOn(player1Obj) {
                 setCSSAttributes(skynet.cpBoard, a)
             });
         } else {
-            console.log("skynet's move")
             whoIsPlaying();
             let c = skynet.cpBoard.randomAttackEnemy(player1Obj.grid);
             setCSSAttributes(player1Obj.grid, c)
@@ -380,13 +376,11 @@ function gameOn(player1Obj) {
     }
     play()
 
-
 }
 
 module.exports = gameOn
-},{"./computerPlayer/cp":1,"./factories/gameBoardFactory":2,"./factories/playerFactory":3,"./factories/shipFactory":4}],6:[function(require,module,exports){
+},{"./computerPlayer/cp":1}],6:[function(require,module,exports){
 const startOfGame = require("./startOfGame");
-
 startOfGame()
 
 },{"./startOfGame":7}],7:[function(require,module,exports){
@@ -399,23 +393,28 @@ function startOfGame() {
 
     const body = document.querySelector('body');
 
+    const initialState =document.createElement('div');
+    initialState.id ='initialState';
     const battleshipTitle = document.createElement('h1');
+    battleshipTitle.id = 'title';
     battleshipTitle.innerHTML = "Battleship!";
     const enterYourName = document.createElement('h2');
+    enterYourName.id='enterName';
     enterYourName.innerHTML = "Enter your name";
     const playerName = document.createElement('input');
+    playerName.id = 'playerNameInput';
     playerName.type = 'text';
     playerName.maxLength = 8;
-    const startButton = document.createElement('button');
-    startButton.innerHTML = 'Continue';
-    const startGameButton = document.createElement('button');
+    const continueButton = document.createElement('button');
+    continueButton.id='continueButton';
+    continueButton.innerHTML = 'Continue';
+    const continueGameButton = document.createElement('button');
 
-
-
-    body.appendChild(battleshipTitle);
-    body.appendChild(enterYourName);
-    body.appendChild(playerName);
-    body.appendChild(startButton)
+    initialState.appendChild(battleshipTitle);
+    initialState.appendChild(enterYourName);
+    initialState.appendChild(playerName);
+    initialState.appendChild(continueButton)
+    body.appendChild(initialState)
 
 
     function playerCheck() {
@@ -423,29 +422,28 @@ function startOfGame() {
             let errorMessage = document.createElement('p');
             errorMessage.id = "errorMessage";
             errorMessage.innerHTML = 'No name! Enter one to play';
-            body.appendChild(errorMessage);
-        } else {
+            initialState.appendChild(errorMessage);
+        }else{
             createPlayer()
         }
     }
 
-    startButton.addEventListener('click', playerCheck);
+    continueButton.addEventListener('click', playerCheck);
 
     function createPlayer() {
         //removes everything that is not needed
-        body.removeChild(battleshipTitle);
-        body.removeChild(enterYourName);
-        body.removeChild(startButton);
+        initialState.removeChild(battleshipTitle);
+        initialState.removeChild(enterYourName);
+        initialState.removeChild(continueButton);
         let em = document.querySelectorAll('#errorMessage');
         em = Array.from(em);
         em.forEach(e => {
-            body.removeChild(e)
+            initialState.removeChild(e)
         });
-
 
         //before removing the input grab the value and create player with grid
         let player1 = new playerFactory(playerName.value);
-        body.removeChild(playerName);
+        initialState.removeChild(playerName);
         let player1Grid = new gameBoardFactory;
 
         const player1Obj = {
@@ -457,21 +455,27 @@ function startOfGame() {
     }
 
     function playerShipPlacement(player1Obj) {
-        const grids = document.createElement('div');
-        grids.id = 'grids';
+        const messageForPlayer = document.createElement('p');
+        messageForPlayer.id='messageForPlayer';
+        messageForPlayer.innerHTML=`${player1Obj.player1.name} place your ships!`;
+        body.appendChild(messageForPlayer)
+        body.removeChild(initialState);
+        const shipPlacementStage = document.createElement('div');
+        shipPlacementStage.id = 'shipPlacementStage';
+        body.appendChild(shipPlacementStage);
         const containerPlayer = document.createElement('div');
         containerPlayer.id = 'containerPlayer';
         const shipContainer = document.createElement('div');
         shipContainer.id = "shipContainer";
-        grids.appendChild(containerPlayer);
-        grids.appendChild(shipContainer)
         //create button for axis shift
         const axisButton = document.createElement('button');
         axisButton.classList.add("axisButton");
         axisButton.innerHTML = "X";
         axisButton.value = "x";
-        body.appendChild(axisButton);
-        body.appendChild(grids);
+        shipPlacementStage.appendChild(containerPlayer);
+        shipPlacementStage.appendChild(axisButton);
+        shipPlacementStage.appendChild(shipContainer)
+        const startGameButton = document.createElement('button');
 
         //create grid in HTML
         let gameboardDOM = player1Obj.grid.gameBoard;
@@ -547,7 +551,7 @@ function startOfGame() {
                     let errorMessage = document.createElement('p');
                     errorMessage.id = "errorMessage"
                     errorMessage.innerHTML = (player1Obj.grid.shipAllocation(ship, c, axisButton.value))
-                    body.appendChild(errorMessage);
+                    shipPlacementStage.appendChild(errorMessage);
                 } else {
                     shipContainer.removeChild(currentShip)
                     for (let i = 0; i < player1Obj.grid.gameBoard.length; i++) {
@@ -568,19 +572,20 @@ function startOfGame() {
 
         const checkEmptynessOfShipContainer = function(){
             if ( shipContainer.hasChildNodes() == 0 ) {
-                grids.removeChild(shipContainer);
+                shipPlacementStage.removeChild(shipContainer);
+                shipPlacementStage.removeChild(axisButton);
+                body.removeChild(messageForPlayer)
                 let em = document.querySelectorAll('#errorMessage');
                 em = Array.from(em);
                 em.forEach(e => {
-                    body.removeChild(e)
+                    shipPlacementStage.removeChild(e)
                 });
                 startGameButton.id ="startGameButton";
                 startGameButton.innerHTML ='Start Game'
-                body.appendChild(startGameButton);
+                shipPlacementStage.appendChild(startGameButton);
            }
         }
         startGameButton.addEventListener('click',()=>{
-            console.log('let s begin')
             gameOn(player1Obj)
         })
     }

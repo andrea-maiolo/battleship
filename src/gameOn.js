@@ -1,30 +1,22 @@
 const cp = require("./computerPlayer/cp");
-const playerFactory = require("./factories/playerFactory");
-const gameBoardFactory = require("./factories/gameBoardFactory");
-const shipFactory = require("./factories/shipFactory");
-
 
 function gameOn(player1Obj) {
 
-    console.log(player1Obj)
     //this is initialization
     const skynet = cp();
 
     //this is dom
-    const grids = document.querySelector('#grids');
-    const containerPlayer = document.querySelector('#containerPlayer');
+    const shipPlacementStage = document.querySelector('#shipPlacementStage');
+    const startGameButton= document.querySelector('#startGameButton');
+    shipPlacementStage.removeChild(startGameButton)
     const containerComputer = document.createElement('div');
     containerComputer.id = 'containerComputer';
-    grids.appendChild(containerComputer);
+    shipPlacementStage.appendChild(containerComputer);
 
     //display computer's grid
     for (let i = 0; i < skynet.cpBoard.gameBoard.length; i++) {
         let cell = skynet.cpBoard.gameBoard[i];
         let cellDiv = document.createElement('div');
-        //hide this later
-        if (cell.shipObj) {
-            cellDiv.classList.add("computerShip")
-        }
         cellDiv.id = `c${cell.id}`;
         cellDiv.classList.add('computerGridCell')
         containerComputer.appendChild(cellDiv);
@@ -51,19 +43,33 @@ function gameOn(player1Obj) {
             }
         }
         if (temporaryArray1.every(allSink)) {
-            alert('game is over')
             let body = document.querySelector('body');
-            body.removeChild(grids);
+            body.removeChild(shipPlacementStage);
             let h1 = document.createElement('h1');
+            h1.id='finalMessage';
             h1.innerHTML = "You lost!";
+            let replay = document.createElement('button');
+            replay.innerHTML='Replay';
+            replay.classList.add('replayButton');
             body.appendChild(h1);
+            body.appendChild(replay);
+            replay.addEventListener('click',()=>{
+                location.reload()
+            })
         } else if (temporaryArray2.every(allSink)) {
-            alert('game is over')
             let body = document.querySelector('body');
-            body.removeChild(grids);
+            body.removeChild(shipPlacementStage);
             let h1 = document.createElement('h1');
+            h1.id='finalMessage';
             h1.innerHTML = "You won!";
+            let replay = document.createElement('button');
+            replay.innerHTML='Replay';
+            replay.classList.add('replayButton');
             body.appendChild(h1);
+            body.appendChild(replay);
+            replay.addEventListener('click',()=>{
+                location.reload()
+            })
         } else {
             return play()
         }
@@ -108,7 +114,6 @@ function gameOn(player1Obj) {
     const play = function() {
         if (round == player1Obj.name) {
             whoIsPlaying();
-            console.log("my move")
             containerComputer.addEventListener('click', function(e) {
                 let attackedCell = e.path[0].id;
                 attackedCell = attackedCell.replace(/[a-z]/g, "");
@@ -116,14 +121,12 @@ function gameOn(player1Obj) {
                 setCSSAttributes(skynet.cpBoard, a)
             });
         } else {
-            console.log("skynet's move")
             whoIsPlaying();
             let c = skynet.cpBoard.randomAttackEnemy(player1Obj.grid);
             setCSSAttributes(player1Obj.grid, c)
         }
     }
     play()
-
 
 }
 
