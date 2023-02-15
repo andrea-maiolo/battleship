@@ -13,3 +13,5 @@ yarn build
 ```
 
 to bundle your application
+
+This site is live at https://andrea-maiolo.github.io/battleship/
